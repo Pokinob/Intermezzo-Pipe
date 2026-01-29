@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class inputScript : MonoBehaviour
 {
@@ -11,19 +12,28 @@ public class inputScript : MonoBehaviour
         cam = Camera.main;
     }
 
-    public void isRotate(InputAction.CallbackContext context)
+    public void tryRotate(InputAction.CallbackContext context)
     {
         var mousePos = Mouse.current.position.ReadValue();
         var hit = Physics2D.GetRayIntersection(cam.ScreenPointToRay(mousePos));
-
+       
         if (!context.performed || !hit.collider) return;
         Debug.Log(hit.collider.name);
-        _Rotate(hit);
+        switch (context.action.name)
+        {
+            case "RotateClockwise":
+                _Rotate(hit, -90);
+                break;
+
+            case "RotateCounterclockwise":
+                _Rotate(hit, 90);
+                break;
+        }
     }
 
-    private void _Rotate(RaycastHit2D pipe)
+    private void _Rotate(RaycastHit2D pipe, int angle)
     {
-        pipe.transform.Rotate(0, 0, -90);
+        pipe.transform.Rotate(0, 0, angle);
     }
 
 }
