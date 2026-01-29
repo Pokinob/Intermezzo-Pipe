@@ -85,12 +85,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4152653870221859140, guid: aea5959a9dad3da4a9728bfcba63a3ef, type: 3}
+  m_Sprite: {fileID: -230184715, guid: 2716968c2110983459817a012e605315, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.6, y: 1.6}
+  m_Size: {x: 5.12, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37e29c8cd7c8ed04ba078e54c5f361ed, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RotateScript
+  m_EditorClassIdentifier: Assembly-CSharp::pipeScript
   rotations:
   - 0
   - 90
@@ -151,11 +151,11 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.6, y: 1.61}
-    newSize: {x: 1.6, y: 1.6}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 5.12, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.7109375, y: 1.25}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
