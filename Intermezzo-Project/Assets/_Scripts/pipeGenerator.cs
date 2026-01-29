@@ -28,6 +28,6 @@ public class pipeGenerator : MonoBehaviour
                 spawnPipe.name = $"pipe {x}{y}";
             }
         }
-        camPos.transform.position = new Vector3((float)width / 2f - 0.5f, (float)height / 2f - 0.5f, camPos.transform.position.z);
+        camPos.transform.position = new Vector3((float)width / 2f + cellSize.x, (float)height / 2f + 0.5f, camPos.transform.position.z);
     }
 }
