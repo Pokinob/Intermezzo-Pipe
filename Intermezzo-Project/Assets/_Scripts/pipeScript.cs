@@ -4,30 +4,18 @@ using UnityEngine.InputSystem;
 public class pipeScript : MonoBehaviour
 {
     [SerializeField]
-    private Pipedefault _pipeDefault;
-    [SerializeField]
-    private float[] rotations = { 0, 90, 180, 270 };
-    [SerializeField]
-    private bool[] pipeBool; 
+    private float[] rotations = { 0, 90, 180, 270};
 
+    public bool pause = false;
     private void Start()
     {
         int rand=Random.Range(0,rotations.Length);
-        transform.eulerAngles= new Vector3(0, 0, rotations[rand]);
-        makeBool(rand);
+        transform.Rotate(0, 0, rotations[rand]);
+        Physics2D.SyncTransforms();
     }
 
-    private void makeBool(int rand)
+    private void Update()
     {
-        if (rand == 0)
-        {
-            
-        }
-        else
-        {
-
-        }
+        if (pause) return;
     }
-
-
 }
