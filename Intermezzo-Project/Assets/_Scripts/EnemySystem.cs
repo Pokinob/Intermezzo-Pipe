@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemySystem : MonoBehaviour
 {
+    public SpriteRenderer spriteRenderer;
+
     [SerializeField]
     private WinScript[] winScript;
     [SerializeField]
@@ -16,7 +18,14 @@ public class EnemySystem : MonoBehaviour
                 Debug.Log("WAIT WHAT DATA BOCOR");
                 alreadyLose = true;
                 w.alreadyWin = true;
+                spriteRenderer.color = Color.white;
+                break;
             }
+        }
+
+        if (!alreadyLose)
+        {
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
         }
     }
 }
