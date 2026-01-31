@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using static Unity.VisualScripting.Member;
+using static UnityEngine.Rendering.DebugUI;
 
 public class inputScript : MonoBehaviour
 {
@@ -26,14 +28,14 @@ public class inputScript : MonoBehaviour
 
         if (hit.collider.tag == "detector")
         {
-            colObj = hit.collider.GetComponentInParent<Collider2D>();
+            colObj = hit.collider.gameObject.GetComponentInParent<Collider2D>();
         }
         else
         {
             colObj = hit.collider.GetComponent<Collider2D>();
         }
 
-        Debug.Log(hit.collider.name);
+        //Debug.Log(hit.collider.name);
         switch (context.action.name)
         {
             case "RotateClockwise":
@@ -52,11 +54,8 @@ public class inputScript : MonoBehaviour
         pipe.gameObject.transform.Rotate(0, 0, angle);
         //pipe.GetComponent<pipeScript>().pause = true;
         Physics2D.SyncTransforms();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         //pipe.GetComponent<pipeScript>().pause = false;
         freeze = false;
     }
-
-    
-
 }

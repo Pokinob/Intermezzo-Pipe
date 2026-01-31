@@ -4,49 +4,62 @@ using UnityEngine;
 
 public class detectorScript : MonoBehaviour
 {
-    [SerializeField]
-    private string tagObj = "";
+    public nodeScript[] node;
+    public powerSource source;
     public int value = -1;
-    powerSource Source = null;
-    private void OnTriggerEnter2D(Collider2D col)
+    [SerializeField]
+    private SpriteRenderer sr;
+    [SerializeField]
+    private int fixValue = -1;
+    [SerializeField]
+    private bool freeze =false;
+    private void Update()
     {
-        if (value != -1) return;
-        powerSource ps = col.GetComponent<powerSource>();
-        if (col.tag == "Power")
+        if (freeze) return;
+        _Check();
+        if(value != -1)
         {
-            tagObj = col.tag;
-            Source = ps;
-            value = 1;
-            return;
-        }
-        //source dari pipa lain
-        detectorScript other = col.GetComponent<detectorScript>();
-        if (other == null) return;
-        if (other != null && Source == null && other.value != -1 && value == -1) 
-        {
-            Source = other.Source;
-            value = other.value + 1;
+            sr.color = Color.white;
         }
         else
         {
-            int _value= other.value;
-            if(_value < value + 1)
-            { 
-                Source = null;
-                value = -1;
-                return;
-            }
-            Source = other.Source;
-            value = other.value + 1;
+            sr.color = new Color(1f, 1f, 1f, 0.3f);
         }
 
-
     }
-    private void OnTriggerExit2D(Collider2D col)
+
+    private void _Check()
     {
-        if (value != -1 && (tagObj == "Power" && col.tag != "Power")) return;
-        Source = null;
-        value = -1;
+        int bestValue = -1;
+        powerSource bestSource = null;
+
+        foreach (var d in node)
+        {
+            if (d.value == -1) continue;
+            if (d.source == null) continue;
+            if (bestValue == -1 || (d.value < bestValue && d.value > fixValue))
+            {
+                bestValue = d.value;
+                bestSource = d.source;
+            }
+            
+        }
+        
+        value = bestValue;
+        source = bestSource;
     }
 
+    public void _reset()
+    {
+        StartCoroutine(nodeReset());
+    }
+
+    IEnumerator nodeReset()
+    {
+        freeze = true;
+        value = -1;
+        source = null;
+        yield return new WaitForSeconds(0.5f);
+        freeze = false;
+    }
 }

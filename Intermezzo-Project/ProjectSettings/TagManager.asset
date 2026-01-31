@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Power
   - detector
+  - pipe
+  - Target
+  - Enemy
   layers:
   - Default
   - TransparentFX
