@@ -10,7 +10,7 @@ public class WinScript : MonoBehaviour
         detectorScript ds = collision.GetComponentInParent<detectorScript>();
         if (alreadyWin) return;
         if(ds == null) return;
-        value= ds.value;
+        //value= ds.value;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
