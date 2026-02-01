@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class detectorScript : MonoBehaviour
+public class nodeCenterScript : MonoBehaviour
 {
     public nodeScript[] node;
     public int nodeSum = 0;
