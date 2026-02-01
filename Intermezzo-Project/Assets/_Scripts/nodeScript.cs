@@ -4,68 +4,97 @@ using UnityEngine;
 
 public class nodeScript : MonoBehaviour
 {
-    [SerializeField]
-    private bool once=false;
+    public state _state;
+
     [SerializeField]
     private detectorScript dScript;
-    public powerSource source;
-    public int value = -1;
+
+    private void Awake()
+    {
+        _state = state.neutral;
+    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "pipe"|| collision.tag == "detector" || collision.tag == "Target" || once) return;
-
-        powerSource ps = collision.GetComponent<powerSource>();
-        if(collision.tag == "Power" && ps != null)
+        nodeScript otherNode = collision.GetComponent<nodeScript>();
+        detectorScript otherDs= collision.GetComponentInParent<detectorScript>();
+        powerSource otherPs = collision.GetComponent<powerSource>();
+        if (_state == state.neutral)
         {
-            //Debug.Log("Power" + " " + collision.tag);
-            source = ps;
-            value = 1;
-            once = true;
-        }
-        else
-        {
-            detectorScript other = collision.GetComponentInParent<detectorScript>();
-            if(other == null) return;
-            if (other.value == -1 && source == null)
+            if(dScript.nodeSum > 0)
             {
-                value = -1;
-                source = null;
-                once = false;
+                _state = state.output;
             }
             else
             {
-                value = other.value + 1;
-                source = other.source;
-                once = true;
+                if (otherPs != null) 
+                {
+                    _state = state.input;
+                    dScript.plusNodeSum();
+                }
+                if (otherDs == null || otherNode == null) return;
+
+                if (otherDs.nodeSum > 0)
+                {
+                    if (otherNode._state == state.output)
+                    {
+                        _state = state.input;
+                        dScript.plusNodeSum();
+                    }else if( otherNode._state == state.input)
+                    {
+                        if(dScript.nodeSum == 0)
+                        {
+                            otherNode.minusNodeSystem();
+                        }
+                    }
+                }
             }
+                return;
+        }
+
+        if(_state == state.output || _state == state.input)
+        {
+            return;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "pipe"||collision.tag == "detector") return;
-        //Debug.Log("exit");
-        if(collision.tag == "Power" && value==1)
+        if( _state == state.input)
         {
-            value = -1;
-            source = null;
-            once = false;
+            dScript.minusNodeSum();
+            _state = state.neutral;
             return;
         }
-        detectorScript other = collision.GetComponentInParent<detectorScript>();
-        if(other == null) return;
-        value = -1;
-        source = null;
-        once = false;
-        if (other.value < value) dScript._reset();
     }
 
-    public void _Resetvalue()
+    public void nodeReset()
     {
-        value = -1;
-        source = null;
-        once = false;
+        if(_state == state.output)
+        {
+            StartCoroutine(delay());
+            _state = state.neutral;
+            return;
+        }
+        _state = state.neutral;
     }
 
+    public void minusNodeSystem()
+    {
+        dScript.minusNodeSum();
+        _state = state.neutral;
+    }
+    IEnumerator delay()
+    {
+        yield return new WaitUntil(() => !dScript._pause);
+    }
+}
+
+
+
+public enum state
+{
+    output,
+    input,
+    neutral
 }

@@ -5,61 +5,44 @@ using UnityEngine;
 public class detectorScript : MonoBehaviour
 {
     public nodeScript[] node;
-    public powerSource source;
-    public int value = -1;
+    public int nodeSum = 0;
     [SerializeField]
     private SpriteRenderer sr;
-    [SerializeField]
-    private int fixValue = -1;
-    [SerializeField]
-    private bool freeze =false;
+    public bool _pause = false;
     private void Update()
     {
-        if (freeze) return;
-        _Check();
-        if(value != -1)
+
+        if (nodeSum > 0)
         {
             sr.color = Color.white;
         }
         else
         {
-            sr.color = new Color(1f, 1f, 1f, 0.3f);
-        }
-
-    }
-
-    private void _Check()
-    {
-        int bestValue = -1;
-        powerSource bestSource = null;
-
-        foreach (var d in node)
-        {
-            if (d.value == -1) continue;
-            if (d.source == null) continue;
-            if (bestValue == -1 || (d.value < bestValue && d.value > fixValue))
+            if (nodeSum <= 0 && !_pause)
             {
-                bestValue = d.value;
-                bestSource = d.source;
+                StartCoroutine(_reset());
+                sr.color = new Color(1f, 1f, 1f, 0.3f);
             }
-            
         }
-        
-        value = bestValue;
-        source = bestSource;
     }
 
-    public void _reset()
+    public void minusNodeSum()
     {
-        StartCoroutine(nodeReset());
+        nodeSum--;
+    }
+    public void plusNodeSum()
+    {
+        nodeSum++;
     }
 
-    IEnumerator nodeReset()
+    IEnumerator _reset()
     {
-        freeze = true;
-        value = -1;
-        source = null;
-        yield return new WaitForSeconds(0.5f);
-        freeze = false;
+        _pause = true;
+        foreach (var n in node) 
+        {
+         n.nodeReset();
+        }
+        yield return new WaitForSeconds(0.2f);
+        _pause = false;
     }
 }
