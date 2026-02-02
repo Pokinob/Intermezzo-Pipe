@@ -107,13 +107,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a21ea060033284abec0ba8906ba8c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  spriteRenderer: {fileID: 557569820907747305}
-  winScript:
-  - {fileID: 1712646745694385014}
-  - {fileID: 3201799274552634415}
-  - {fileID: 8521074867476108137}
-  - {fileID: 5266931720776022260}
-  alreadyLose: 0
+  sR: {fileID: 0}
+  startAlert: 0
+  startHostile: 0
+  startProgress: 0
+  gameManager: {fileID: 0}
+  hostilePrefab: {fileID: 0}
+  exposurePerSec: 2
+  getExposure: 10
+  exposureHostile: 5
+  exposureNormal: 2
 --- !u!1 &1202867942019069710
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +128,7 @@ GameObject:
   - component: {fileID: 950311596808861145}
   - component: {fileID: 6486193577215124216}
   - component: {fileID: 3962299787429382828}
-  - component: {fileID: 3201799274552634415}
+  - component: {fileID: 7243812061973531453}
   m_Layer: 0
   m_Name: node2
   m_TagString: Untagged
@@ -225,7 +228,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.05, y: 0.1}
   m_EdgeRadius: 0
---- !u!114 &3201799274552634415
+--- !u!114 &7243812061973531453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -234,11 +237,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1202867942019069710}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4290c6508611912499013f17d855c56b, type: 3}
+  m_Script: {fileID: 11500000, guid: 546e14223bc670f498b3cc768943d5ed, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WinScript
-  alreadyWin: 0
-  value: 0
+  m_EditorClassIdentifier: Assembly-CSharp::enemyNodeScript
+  _enemySystem: {fileID: 2338484671217767215}
+  state: 0
 --- !u!1 &5379732840122061718
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,7 +253,7 @@ GameObject:
   - component: {fileID: 8117827602809045492}
   - component: {fileID: 6510086716050847646}
   - component: {fileID: 8314097246222208336}
-  - component: {fileID: 1712646745694385014}
+  - component: {fileID: 72541560259413403}
   m_Layer: 0
   m_Name: node1
   m_TagString: Untagged
@@ -350,7 +353,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.1, y: 0.05}
   m_EdgeRadius: 0
---- !u!114 &1712646745694385014
+--- !u!114 &72541560259413403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -359,11 +362,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5379732840122061718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4290c6508611912499013f17d855c56b, type: 3}
+  m_Script: {fileID: 11500000, guid: 546e14223bc670f498b3cc768943d5ed, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WinScript
-  alreadyWin: 0
-  value: 0
+  m_EditorClassIdentifier: '::'
+  _enemySystem: {fileID: 2338484671217767215}
+  state: 0
 --- !u!1 &5610004856882155084
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +378,7 @@ GameObject:
   - component: {fileID: 5908297214488000983}
   - component: {fileID: 4671271081407695156}
   - component: {fileID: 5938996329807936290}
-  - component: {fileID: 8521074867476108137}
+  - component: {fileID: 6344656872347570623}
   m_Layer: 0
   m_Name: node3
   m_TagString: Untagged
@@ -475,7 +478,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.05, y: 0.1}
   m_EdgeRadius: 0
---- !u!114 &8521074867476108137
+--- !u!114 &6344656872347570623
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -484,11 +487,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5610004856882155084}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4290c6508611912499013f17d855c56b, type: 3}
+  m_Script: {fileID: 11500000, guid: 546e14223bc670f498b3cc768943d5ed, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WinScript
-  alreadyWin: 0
-  value: 0
+  m_EditorClassIdentifier: Assembly-CSharp::enemyNodeScript
+  _enemySystem: {fileID: 2338484671217767215}
+  state: 0
 --- !u!1 &7666037088876339096
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,7 +503,7 @@ GameObject:
   - component: {fileID: 6049058095751883211}
   - component: {fileID: 2129538369408037547}
   - component: {fileID: 781116591379356349}
-  - component: {fileID: 5266931720776022260}
+  - component: {fileID: 3020031288342185629}
   m_Layer: 0
   m_Name: node4
   m_TagString: Untagged
@@ -600,7 +603,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.1, y: 0.05}
   m_EdgeRadius: 0
---- !u!114 &5266931720776022260
+--- !u!114 &3020031288342185629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -609,8 +612,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7666037088876339096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4290c6508611912499013f17d855c56b, type: 3}
+  m_Script: {fileID: 11500000, guid: 546e14223bc670f498b3cc768943d5ed, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WinScript
-  alreadyWin: 0
-  value: 0
+  m_EditorClassIdentifier: Assembly-CSharp::enemyNodeScript
+  _enemySystem: {fileID: 2338484671217767215}
+  state: 0
