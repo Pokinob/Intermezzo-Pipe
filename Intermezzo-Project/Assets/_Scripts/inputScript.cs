@@ -1,10 +1,6 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using static Unity.VisualScripting.Member;
-using static UnityEngine.Rendering.DebugUI;
 
 public class inputScript : MonoBehaviour
 {
