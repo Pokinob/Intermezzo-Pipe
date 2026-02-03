@@ -10,6 +10,8 @@ public class pipeGenerator : MonoBehaviour
     private int width, height;
     [SerializeField]
     private Vector2 cellSize;
+    [SerializeField]
+    private Vector2 cellPositionOffset;
 
     private void Start()
     {
@@ -24,7 +26,11 @@ public class pipeGenerator : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 int rand = Random.Range(0, pipePrefab.Length);
-                var spawnPipe = Instantiate(pipePrefab[rand], new Vector3((x * cellSize.x)+0.5f, (y * cellSize.y)+0.5f), Quaternion.identity);
+                var spawnPipe = Instantiate(pipePrefab[rand], new Vector3(
+                    (x * cellSize.x)+0.5f+cellPositionOffset.x, 
+                    (y * cellSize.y)+0.5f+cellPositionOffset.y), 
+                    Quaternion.identity
+                );
                 spawnPipe.name = $"pipe {x}{y}";
             }
         }
