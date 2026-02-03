@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -7,6 +8,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class inputScript : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject menuPanel;
+
     public bool freeze = false;
     private Camera cam;
     private Coroutine coroutine;
@@ -15,6 +19,21 @@ public class inputScript : MonoBehaviour
     {
         cam = Camera.main;
     }
+
+    public void openMenu()
+    {
+        menuPanel.SetActive(!menuPanel.activeSelf);
+    }
+
+    public void esc(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            openMenu();
+        }
+    }
+
+
 
     public void tryRotate(InputAction.CallbackContext context)
     {
@@ -42,9 +61,9 @@ public class inputScript : MonoBehaviour
                 coroutine = StartCoroutine(_Rotate(colObj, -90));
                 break;
 
-            case "RotateCounterclockwise":
-                coroutine = StartCoroutine(_Rotate(colObj, 90));
-                break;
+            //case "RotateCounterclockwise":
+            //    coroutine = StartCoroutine(_Rotate(colObj, 90));
+            //    break;
         }
     }
 

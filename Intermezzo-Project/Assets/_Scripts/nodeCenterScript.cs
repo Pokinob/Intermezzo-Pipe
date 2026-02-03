@@ -1,14 +1,22 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class nodeCenterScript : MonoBehaviour
 {
     public nodeScript[] node;
+    public bool poweredFromSource = false;
     public int nodeSum = 0;
+    public int nodeMax;
     [SerializeField]
     private SpriteRenderer sr;
     public bool _pause = false;
+
+    private void Start()
+    {
+        nodeMax = node.Length;
+    }
     private void Update()
     {
 
@@ -38,11 +46,11 @@ public class nodeCenterScript : MonoBehaviour
     IEnumerator _reset()
     {
         _pause = true;
-        foreach (var n in node) 
+        foreach (var n in node)
         {
-         n.nodeReset();
+            n.nodeReset();
         }
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         _pause = false;
     }
 }

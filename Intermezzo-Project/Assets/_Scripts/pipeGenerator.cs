@@ -24,10 +24,10 @@ public class pipeGenerator : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 int rand = Random.Range(0, pipePrefab.Length);
-                var spawnPipe = Instantiate(pipePrefab[rand], new Vector3(x * cellSize.x, y * cellSize.y), Quaternion.identity);
+                var spawnPipe = Instantiate(pipePrefab[rand], new Vector3((x * cellSize.x)+0.5f, (y * cellSize.y)+0.5f), Quaternion.identity);
                 spawnPipe.name = $"pipe {x}{y}";
             }
         }
-        camPos.transform.position = new Vector3((float)width / 2f + cellSize.x, (float)height / 2f + 0.5f, camPos.transform.position.z);
+        //camPos.transform.position = new Vector3((float)width / 2f + cellSize.x, (float)height / 2f + 0.5f, camPos.transform.position.z);
     }
 }

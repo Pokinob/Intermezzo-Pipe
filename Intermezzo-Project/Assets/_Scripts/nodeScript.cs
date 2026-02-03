@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class nodeScript : MonoBehaviour
@@ -16,18 +17,19 @@ public class nodeScript : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         nodeScript otherNode = collision.GetComponent<nodeScript>();
-        nodeCenterScript otherNodeCenter= collision.GetComponentInParent<nodeCenterScript>();
+        nodeCenterScript otherNodeCenter = collision.GetComponentInParent<nodeCenterScript>();
         powerSource otherPowerSource = collision.GetComponent<powerSource>();
 
         if (_state == nodeState.neutral)
         {
-            if(dScript.nodeSum > 0)
+
+            if (dScript.nodeSum > 0)
             {
                 _state = nodeState.output;
             }
             else
             {
-                if (otherPowerSource != null) 
+                if (otherPowerSource != null)
                 {
                     _state = nodeState.input;
                     dScript.plusNodeSum();
@@ -40,27 +42,41 @@ public class nodeScript : MonoBehaviour
                     {
                         _state = nodeState.input;
                         dScript.plusNodeSum();
-                    }else if( otherNode._state == nodeState.input)
+                    }
+                    else if (otherNode._state == nodeState.input)
                     {
-                        if(dScript.nodeSum == 0)
+                        if (dScript.nodeSum == 0)
                         {
                             otherNode.minusNodeSystem();
                         }
                     }
                 }
             }
-                return;
-        }
-
-        if(_state == nodeState.output || _state == nodeState.input)
-        {
             return;
+        }
+        if (_state == nodeState.input) return;
+        if (_state == nodeState.output)
+        {
+            if (otherNode != null || otherNodeCenter != null)
+                if (otherNode._state == nodeState.output)
+                {
+                    if (otherNodeCenter.nodeMax - otherNodeCenter.nodeSum >= dScript.nodeMax - dScript.nodeSum)
+                    {
+                        _state = nodeState.input;
+                        dScript.plusNodeSum();
+                    }
+                    else
+                    {
+                        _state = nodeState.output;
+                        return;
+                    }
+                }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if( _state == nodeState.input)
+        if (_state == nodeState.input)
         {
             dScript.minusNodeSum();
             _state = nodeState.neutral;
@@ -70,7 +86,7 @@ public class nodeScript : MonoBehaviour
 
     public void nodeReset()
     {
-        if(_state == nodeState.output)
+        if (_state == nodeState.output)
         {
             StartCoroutine(delay());
             _state = nodeState.neutral;
@@ -88,6 +104,8 @@ public class nodeScript : MonoBehaviour
     {
         yield return new WaitUntil(() => !dScript._pause);
     }
+
+
 }
 
 

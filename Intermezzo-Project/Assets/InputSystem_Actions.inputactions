@@ -16,9 +16,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RotateCounterclockwise",
+                    "name": "openMenu",
                     "type": "Button",
-                    "id": "b70d7bc9-794c-4847-88c0-d274c9891f2e",
+                    "id": "6a2a24c5-f512-4723-ab30-6f6cb92302e0",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -39,12 +39,12 @@
                 },
                 {
                     "name": "",
-                    "id": "10296baa-68dc-4a69-8bb3-d2d945838f3b",
-                    "path": "<Mouse>/rightButton",
+                    "id": "9212eb40-5a1d-4ea9-861b-499ff9477d6b",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "RotateCounterclockwise",
+                    "action": "openMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
