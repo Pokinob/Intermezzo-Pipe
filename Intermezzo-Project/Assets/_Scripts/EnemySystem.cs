@@ -10,8 +10,8 @@ public class EnemySystem : MonoBehaviour
     private Coroutine hostile;
     [SerializeField]
     private bool startProgress = false;
-    [SerializeField]
-    private GameManager gameManager;
+
+    public GameManager gameManager;
     [SerializeField] 
     private GameObject hostilePrefab;
     [SerializeField]

@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class pipeGenerator : MonoBehaviour
 {
+    [SerializeField]
+    private GameManager gameManager;
+
     [SerializeField]
     private Transform camPos;
 
@@ -29,6 +33,12 @@ public class pipeGenerator : MonoBehaviour
     [SerializeField]
     private int[] pipeWeights;
 
+    [SerializeField]
+    private int enemySpawnTimeSeconds;
+
+    [SerializeField]
+    private int targetSpawnTimeSeconds; 
+
     private int totalWeights;
     private List<Vector2> unavailableNodePositions;
 
@@ -44,6 +54,9 @@ public class pipeGenerator : MonoBehaviour
         }
 
         Generate();
+
+        StartCoroutine(loopSpawnEnemy());
+        StartCoroutine(loopSpawnTarget());
     }
 
     void Generate()
@@ -93,21 +106,25 @@ public class pipeGenerator : MonoBehaviour
         
         for (int i = 0; i < 2; i++)
         {
-            generateTargetNode();
+            generateNode(destinationNodePrefab);
         }
         //camPos.transform.position = new Vector3((float)width / 2f + cellSize.x, (float)height / 2f + 0.5f, camPos.transform.position.z);
     }
 
-    private void generateTargetNode()
+    private GameObject generateNode(GameObject node)
     {
         Vector2 nextPosition = getAvailableNodePosition();
+        unavailableNodePositions.Add(nextPosition);
+
         Vector2 actualPosition = nextPosition + new Vector2(0.5f, 0.5f) + cellPositionOffset;
 
-        GameObject nextSpawn = Instantiate(destinationNodePrefab, actualPosition, Quaternion.identity);
+        GameObject nextSpawn = Instantiate(node, actualPosition, Quaternion.identity);
         nextSpawn.name = $"target {nextPosition.x}-{nextPosition.y}";
 
         GameObject overridenPipe = GameObject.Find($"pipe {nextPosition.x}-{nextPosition.y}");
         overridenPipe.SetActive( false );
+
+        return nextSpawn;
     }
 
     private Vector2 getAvailableNodePosition()
@@ -154,5 +171,25 @@ public class pipeGenerator : MonoBehaviour
         }
 
         return pipePrefab[idx];
+    }
+
+    IEnumerator loopSpawnEnemy()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(enemySpawnTimeSeconds);
+            GameObject newNode = generateNode(enemyNodePrefab);
+            EnemySystem enemySystem = newNode.GetComponent<EnemySystem>();
+            enemySystem.gameManager = gameManager;
+        }
+     
+    }
+    IEnumerator loopSpawnTarget()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(targetSpawnTimeSeconds);
+            generateNode(destinationNodePrefab);
+        }
     }
 }

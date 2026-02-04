@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a21ea060033284abec0ba8906ba8c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  sR: {fileID: 0}
+  sR: {fileID: 557569820907747305}
   startAlert: 0
   startHostile: 0
   startProgress: 0
