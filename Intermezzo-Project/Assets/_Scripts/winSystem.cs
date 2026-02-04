@@ -43,6 +43,7 @@ public class winSystem : MonoBehaviour
             Debug.Log(i);
             yield return new WaitForSeconds(1f);
         }
+        GameManager.Instance.documentCount++;
         alreadyWin = true;
         Debug.Log("Data berhasil terkirim");
     }

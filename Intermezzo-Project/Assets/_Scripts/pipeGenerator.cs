@@ -180,7 +180,6 @@ public class pipeGenerator : MonoBehaviour
             yield return new WaitForSeconds(enemySpawnTimeSeconds);
             GameObject newNode = generateNode(enemyNodePrefab);
             EnemySystem enemySystem = newNode.GetComponent<EnemySystem>();
-            enemySystem.gameManager = gameManager;
         }
      
     }

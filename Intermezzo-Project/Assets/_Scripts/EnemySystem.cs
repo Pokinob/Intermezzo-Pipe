@@ -6,22 +6,19 @@ public class EnemySystem : MonoBehaviour
     public SpriteRenderer sR;
     public bool startAlert = false;
     public bool startHostile = false;
-    private Coroutine alert;
     private Coroutine hostile;
     [SerializeField]
     private bool startProgress = false;
 
-    public GameManager gameManager;
     [SerializeField] 
     private GameObject hostilePrefab;
     [SerializeField]
     private float exposurePerSec;
     [SerializeField]
-    private int getExposure;
+    private float getExposure;
     [SerializeField]
-    private int exposureHostile;
-    [SerializeField]
-    private int exposureNormal;
+    private float exposureHostile;
+
 
     private void Update()
     {
@@ -36,45 +33,29 @@ public class EnemySystem : MonoBehaviour
         if (startProgress) return;
            
         
-        if (startAlert && !startHostile)
+        if (startAlert && !startHostile && !GameManager.Instance.alreadyStart)
         {
             if (hostile != null) StopCoroutine(hostile);
-            alert= StartCoroutine(alertSystem());
+            GameManager.Instance.alreadyStart = true;
+            GameManager.Instance.startAlert();
             return;
         }
         if (startHostile) 
         {
-            if (alert != null) StopCoroutine(alert);
-            gameManager.Exposure += getExposure;
+            GameManager.Instance.Exposure += getExposure;
             hostile = StartCoroutine (hostileSystem());
             return;
         }
     }
-
-    IEnumerator alertSystem()
-    {
-        startProgress = true;
-        while (startAlert && !startHostile)
-        {
-            gameManager.Exposure += exposureNormal;
-            yield return new WaitForSeconds(exposurePerSec);
-        }
-        startProgress = false;
-    }
     IEnumerator hostileSystem()
     {
         startProgress = true;
-
         while (startHostile)
         {
-            gameManager.Exposure += exposureHostile;
+            GameManager.Instance.Exposure+=exposureHostile;
             yield return new WaitForSeconds(exposurePerSec);
         }
         startProgress = false;
     }
 
-    public void changeToAlert()
-    {
-        StopCoroutine(hostile);
-    }
 }

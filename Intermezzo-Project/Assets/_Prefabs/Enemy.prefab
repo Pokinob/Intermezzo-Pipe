@@ -111,12 +111,10 @@ MonoBehaviour:
   startAlert: 0
   startHostile: 0
   startProgress: 0
-  gameManager: {fileID: 0}
   hostilePrefab: {fileID: 0}
-  exposurePerSec: 2
+  exposurePerSec: 3
   getExposure: 10
-  exposureHostile: 5
-  exposureNormal: 2
+  exposureHostile: 2
 --- !u!1 &1202867942019069710
 GameObject:
   m_ObjectHideFlags: 0
