@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,9 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    [SerializeField]
+    private inputScript ingamePause;
+
     public bool alreadyStart = false;
     [SerializeField]
     private Slider sliderExposure;
@@ -16,11 +20,18 @@ public class GameManager : MonoBehaviour
     public bool delayPipe = false;
     private bool cutting = false;
     public int cutPipe = 0;
-    public TMP_Text documentPanel;
     public int documentCount = 0;
     public int targetDocument = 50;
     [SerializeField]
     private int targetExposure;
+
+    public TMP_Text documentPanel;
+    [SerializeField]
+    private AudioSource gameOverSound;
+    [SerializeField]
+    private AudioClip gameOver;
+    [SerializeField]
+    private GameObject gameOverPanel;
 
     private void Awake()
     {
@@ -50,6 +61,10 @@ public class GameManager : MonoBehaviour
     private void UIlose()
     {
         StopAllCoroutines();
+        gameOverSound.clip = gameOver;
+        gameOverSound.Play();
+        ingamePause.freeze = true;
+        gameOverPanel.SetActive(true);
         Debug.Log("Data get leaked by user");
     }
     

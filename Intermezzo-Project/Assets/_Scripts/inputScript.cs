@@ -6,7 +6,8 @@ public class inputScript : MonoBehaviour
 {
     [SerializeField]
     private GameObject menuPanel;
-
+    [SerializeField]
+    private AudioClip pipeSound;
     public bool freeze = false;
     private Camera cam;
     private Coroutine coroutine;
@@ -66,6 +67,7 @@ public class inputScript : MonoBehaviour
     IEnumerator _Rotate(Collider2D pipe, int angle)
     {
         freeze = true;
+        SoundFXManager.Instance.PlaySoundClip(pipeSound, transform, 1f);
         pipe.gameObject.transform.Rotate(0, 0, angle);
         //pipe.GetComponent<pipeScript>().pause = true;
         Physics2D.SyncTransforms();
