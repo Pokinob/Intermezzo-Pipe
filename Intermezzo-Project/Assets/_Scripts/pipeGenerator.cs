@@ -24,12 +24,23 @@ public class pipeGenerator : MonoBehaviour
     [SerializeField]
     private Vector2[] powerNodePositions;
 
+    [SerializeField]
+    private int[] pipeWeights;
+    private int totalWeights;
+
     private void Start()
     {
         SpriteRenderer sr = pipePrefab[0].GetComponent<SpriteRenderer>();
         cellSize = sr.bounds.size;
+
+        foreach (int weight in pipeWeights)
+        {
+            totalWeights += weight;
+        }
+
         Generate();
     }
+
     void Generate()
     {
         for (int x = 0; x < width; x++)
@@ -51,18 +62,37 @@ public class pipeGenerator : MonoBehaviour
                     }
                 }
 
-                if (isPowerNode) 
+                if (isPowerNode)
                 {
                     GameObject nextSpawn = Instantiate(powerNodePrefab, nextPosition, Quaternion.identity);
                     nextSpawn.name = $"power {x}-{y}";
-                } else
+                }
+                else
                 {
-                    int rand = Random.Range(0, pipePrefab.Length);
-                    GameObject nextSpawn = Instantiate(pipePrefab[rand], nextPosition, Quaternion.identity);
+                    GameObject nextSpawn = Instantiate(rollPipe(), nextPosition, Quaternion.identity);
                     nextSpawn.name = $"pipe {x}-{y}";
                 }
             }
         }
         //camPos.transform.position = new Vector3((float)width / 2f + cellSize.x, (float)height / 2f + 0.5f, camPos.transform.position.z);
+    }
+
+    private GameObject rollPipe()
+    {
+        int roll = Random.Range(0, totalWeights);
+        int idx = 0;
+        int weightSum = 0;
+        foreach (int weight in pipeWeights)
+        {
+            weightSum += weight;
+            if (weightSum > roll)
+            {
+                break;
+            }
+
+            idx++;
+        }
+
+        return pipePrefab[idx];
     }
 }
