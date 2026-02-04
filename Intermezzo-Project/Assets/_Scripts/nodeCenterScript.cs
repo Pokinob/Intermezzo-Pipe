@@ -6,17 +6,11 @@ using UnityEngine;
 public class nodeCenterScript : MonoBehaviour
 {
     public nodeScript[] node;
-    public bool poweredFromSource = false;
     public int nodeSum = 0;
-    public int nodeMax;
     [SerializeField]
     private SpriteRenderer sr;
     public bool _pause = false;
 
-    private void Start()
-    {
-        nodeMax = node.Length;
-    }
     private void Update()
     {
 
@@ -50,7 +44,7 @@ public class nodeCenterScript : MonoBehaviour
         {
             n.nodeReset();
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         _pause = false;
     }
 }

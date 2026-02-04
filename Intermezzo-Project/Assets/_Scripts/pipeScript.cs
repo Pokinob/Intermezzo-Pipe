@@ -5,6 +5,8 @@ public class pipeScript : MonoBehaviour
 {
     [SerializeField]
     private float[] rotations = { 0, 90, 180, 270};
+    [SerializeField]
+    private GameManager gameManager;
 
     private void Start()
     {
