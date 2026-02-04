@@ -19,10 +19,9 @@ public class nodeScript : MonoBehaviour
         nodeScript otherNode = collision.GetComponent<nodeScript>();
         nodeCenterScript otherNodeCenter = collision.GetComponentInParent<nodeCenterScript>();
         powerSource otherPowerSource = collision.GetComponent<powerSource>();
-
         if (_state == nodeState.neutral)
         {
-
+            if (dScript.nodeSum > 0 && GameManager.Instance.delayPipe) return;
             if (dScript.nodeSum > 0)
             {
                 _state = nodeState.output;
@@ -60,17 +59,25 @@ public class nodeScript : MonoBehaviour
             if (otherNode != null || otherNodeCenter != null)
                 if (otherNode._state == nodeState.output)
                 {
-                    if (otherNodeCenter.nodeMax - otherNodeCenter.nodeSum >= dScript.nodeMax - dScript.nodeSum)
-                    {
-                        _state = nodeState.input;
-                        dScript.plusNodeSum();
-                    }
-                    else
-                    {
-                        _state = nodeState.output;
-                        return;
-                    }
+                    otherNode._state = nodeState.mix;
+                    _state = nodeState.mix;
                 }
+        }
+        if(_state == nodeState.mix)
+        {
+            if(GameManager.Instance != null)
+            if (!GameManager.Instance.delayPipe)
+            {
+                if (otherNode == null) return;
+                if (otherNode._state == nodeState.output)
+                {
+                    otherNode._state = nodeState.mix;
+                }else if (dScript.nodeSum > 0)
+                {
+                    _state = nodeState.output;
+                }
+            }
+            return;
         }
     }
 
@@ -82,11 +89,15 @@ public class nodeScript : MonoBehaviour
             _state = nodeState.neutral;
             return;
         }
+        if (_state == nodeState.mix) 
+        {
+            GameManager.Instance.cutPipe++;
+        }
     }
 
     public void nodeReset()
     {
-        if (_state == nodeState.output)
+        if (_state == nodeState.output|| _state == nodeState.mix)
         {
             StartCoroutine(delay());
             _state = nodeState.neutral;
@@ -113,6 +124,7 @@ public class nodeScript : MonoBehaviour
 public enum nodeState
 {
     output,
+    mix,
     input,
     neutral
 }
