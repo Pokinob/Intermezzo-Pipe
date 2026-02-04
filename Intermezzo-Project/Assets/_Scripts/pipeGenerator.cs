@@ -1,7 +1,13 @@
+using System.Collections.Generic;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class pipeGenerator : MonoBehaviour
 {
+    [SerializeField]
+    private GameManager gameManager;
+
     [SerializeField]
     private Transform camPos;
 
@@ -26,19 +32,31 @@ public class pipeGenerator : MonoBehaviour
 
     [SerializeField]
     private int[] pipeWeights;
+
+    [SerializeField]
+    private int enemySpawnTimeSeconds;
+
+    [SerializeField]
+    private int targetSpawnTimeSeconds; 
+
     private int totalWeights;
+    private List<Vector2> unavailableNodePositions;
 
     private void Start()
     {
         SpriteRenderer sr = pipePrefab[0].GetComponent<SpriteRenderer>();
         cellSize = sr.bounds.size;
-
+        unavailableNodePositions = new List<Vector2>();
+    
         foreach (int weight in pipeWeights)
         {
             totalWeights += weight;
         }
 
         Generate();
+
+        StartCoroutine(loopSpawnEnemy());
+        StartCoroutine(loopSpawnTarget());
     }
 
     void Generate()
@@ -74,7 +92,66 @@ public class pipeGenerator : MonoBehaviour
                 }
             }
         }
+
+        foreach (Vector2 nodePosition in powerNodePositions)
+        {
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    unavailableNodePositions.Add(nodePosition + new Vector2(x, y));
+                }
+            }
+        }
+        
+        for (int i = 0; i < 2; i++)
+        {
+            generateNode(destinationNodePrefab);
+        }
         //camPos.transform.position = new Vector3((float)width / 2f + cellSize.x, (float)height / 2f + 0.5f, camPos.transform.position.z);
+    }
+
+    private GameObject generateNode(GameObject node)
+    {
+        Vector2 nextPosition = getAvailableNodePosition();
+        unavailableNodePositions.Add(nextPosition);
+
+        Vector2 actualPosition = nextPosition + new Vector2(0.5f, 0.5f) + cellPositionOffset;
+
+        GameObject nextSpawn = Instantiate(node, actualPosition, Quaternion.identity);
+        nextSpawn.name = $"target {nextPosition.x}-{nextPosition.y}";
+
+        GameObject overridenPipe = GameObject.Find($"pipe {nextPosition.x}-{nextPosition.y}");
+        overridenPipe.SetActive( false );
+
+        return nextSpawn;
+    }
+
+    private Vector2 getAvailableNodePosition()
+    {
+        while (true)
+        {
+            Vector2 newPosition = new Vector2(
+                Random.Range(0, width),
+                Random.Range(0, height)
+            );
+
+            bool isFound = true;
+            foreach (Vector2 unavailablePosition in unavailableNodePositions)
+            {
+                if (newPosition == unavailablePosition)
+                {
+                    isFound = false;
+                    break;
+                }
+            }
+
+            if (isFound)
+            {
+                // offset
+                return newPosition;
+            }
+        }
     }
 
     private GameObject rollPipe()
@@ -94,5 +171,25 @@ public class pipeGenerator : MonoBehaviour
         }
 
         return pipePrefab[idx];
+    }
+
+    IEnumerator loopSpawnEnemy()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(enemySpawnTimeSeconds);
+            GameObject newNode = generateNode(enemyNodePrefab);
+            EnemySystem enemySystem = newNode.GetComponent<EnemySystem>();
+            enemySystem.gameManager = gameManager;
+        }
+     
+    }
+    IEnumerator loopSpawnTarget()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(targetSpawnTimeSeconds);
+            generateNode(destinationNodePrefab);
+        }
     }
 }
