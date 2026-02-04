@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   spriteRenderer: {fileID: 557569820907747305}
-  _timer: 0
+  _timer: 5
   alreadyWin: 0
 --- !u!1 &1202867942019069710
 GameObject:
