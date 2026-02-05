@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f1c5a57fcbc1f614ea58790da7eb8426
+guid: 9b15cf0c9a194c44d91827fab7a8073a
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Nimbus Sans Becker PBla
+  - Inter 24pt
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
