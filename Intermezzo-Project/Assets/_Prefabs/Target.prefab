@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1537970964343954606}
   - component: {fileID: 557569820907747305}
   - component: {fileID: 5594533031569733322}
+  - component: {fileID: 7051290671821514553}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -114,6 +115,19 @@ MonoBehaviour:
   spriteRenderer: {fileID: 557569820907747305}
   _timer: 5
   alreadyWin: 0
+--- !u!114 &7051290671821514553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779191173118050763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8287416c016560347817cbb1157a6df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::nodeData
+  pipeBelow: {fileID: 0}
 --- !u!1 &1202867942019069710
 GameObject:
   m_ObjectHideFlags: 0

@@ -128,6 +128,8 @@ public class pipeGenerator : MonoBehaviour
         GameObject overridenPipe = GameObject.Find($"pipe {at.x}-{at.y}");
         overridenPipe.SetActive(false);
 
+        newNode.GetComponent<nodeData>().pipeBelow = overridenPipe;
+
         return newNode;
     }
 

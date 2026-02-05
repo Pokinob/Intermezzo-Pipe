@@ -19,6 +19,12 @@ public class EnemySystem : MonoBehaviour
     [SerializeField]
     private float exposureHostile;
 
+    private nodeData nodeData;
+
+    private void Start()
+    {
+        nodeData = gameObject.GetComponent<nodeData>();
+    }
 
     private void Update()
     {

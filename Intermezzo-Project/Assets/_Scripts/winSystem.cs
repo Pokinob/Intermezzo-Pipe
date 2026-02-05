@@ -1,17 +1,22 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 
 public class winSystem : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
-
+    
     [SerializeField]
     private int _timer;
     [SerializeField]
     private bool alreadyWin=false;
     [SerializeField]
     private Coroutine coroutine = null;
+
+    private nodeData nodeData;
+    private void Start()
+    {
+        nodeData = gameObject.GetComponent<nodeData>();
+    }
 
     void Update()
     {
@@ -46,5 +51,14 @@ public class winSystem : MonoBehaviour
         GameManager.Instance.documentCount++;
         alreadyWin = true;
         Debug.Log("Data berhasil terkirim");
+
+        yield return new WaitForSeconds(1f);
+
+        if (nodeData.pipeBelow != null)
+        {
+            nodeData.pipeBelow.SetActive(true);
+        }
+
+        Destroy(gameObject);
     }
 }
