@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject gameOverPanel;
     [SerializeField]
+    private TMP_Text gameoverText;
+    [SerializeField]
     private Image PropagandaPanel;
 
     private void Awake()
@@ -67,6 +69,7 @@ public class GameManager : MonoBehaviour
         gameOverSound.clip = gameOver;
         gameOverSound.Play();
         globalPause.instance._globalPause = true;
+        gameoverText.text = "Total Documents Transferred: " + documentCount.ToString();
         gameOverPanel.SetActive(true);
         Debug.Log("Data get leaked by user");
     }
