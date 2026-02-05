@@ -16,6 +16,7 @@ public class winSystem : MonoBehaviour
     private void Start()
     {
         nodeData = gameObject.GetComponent<nodeData>();
+        spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
     }
 
     void Update()

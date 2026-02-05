@@ -24,6 +24,7 @@ public class EnemySystem : MonoBehaviour
     private void Start()
     {
         nodeData = gameObject.GetComponent<nodeData>();
+        sR.color = new Color(1f, 1f, 1f, 0.3f);
     }
 
     private void Update()
