@@ -213,6 +213,7 @@ public class pipeGenerator : MonoBehaviour
         {
             yield return new WaitForSeconds(targetSpawnTimeSeconds);
             generateNodeAtRandomPosition("target", destinationNodePrefab);
+            generateNodeAtRandomPosition("target", destinationNodePrefab);
         }
     }
 }
