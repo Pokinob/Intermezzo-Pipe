@@ -21,11 +21,19 @@ public class inputScript : MonoBehaviour
     public void openMenu()
     {
         menuPanel.SetActive(!menuPanel.activeSelf);
+        if (menuPanel.activeSelf) 
+        {
+            globalPause.instance._globalPause = true;
+        }
+        else
+        {
+            globalPause.instance._globalPause = false;
+        }
     }
 
     public void esc(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !openSettings.instance.panelSettings.activeSelf)
         {
             openMenu();
         }
@@ -35,11 +43,12 @@ public class inputScript : MonoBehaviour
 
     public void tryRotate(InputAction.CallbackContext context)
     {
-        if (freeze) return;
+        if (globalPause.instance._globalPause) return;
         var mousePos = Mouse.current.position.ReadValue();
         var hit = Physics2D.GetRayIntersection(cam.ScreenPointToRay(mousePos));
 
         if (!context.performed || !hit.collider) return;
+        if (hit.collider.tag == "Power" || hit.collider.tag == "Target" || hit.collider.tag == "Enemy") return;
 
         Collider2D colObj;
 

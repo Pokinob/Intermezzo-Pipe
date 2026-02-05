@@ -9,6 +9,8 @@ public class winSystem : MonoBehaviour
     private int _timer;
     [SerializeField]
     private bool alreadyWin=false;
+    [SerializeField] 
+    private bool once=false;
     [SerializeField]
     private Coroutine coroutine = null;
 
@@ -28,17 +30,20 @@ public class winSystem : MonoBehaviour
         else
         {
             spriteRenderer.color = Color.white;
+            Destroy(gameObject);
         }
     }
 
     public void progressWin()
     {
+        if (!alreadyWin && !once)
         coroutine = StartCoroutine(progStart());
     }
 
     public void progStop()
     {
         StopCoroutine(coroutine);
+        once = false;
         Debug.Log("Data gagal terkirim");
     }
 
@@ -46,8 +51,13 @@ public class winSystem : MonoBehaviour
     {
         for (int i = _timer; i >= 0; i--) 
         {
-            Debug.Log(i);
+            
             yield return new WaitForSeconds(1f);
+            if (globalPause.instance._globalPause)
+            {
+                Debug.Log(i);
+                i++;
+            }
         }
         GameManager.Instance.documentCount++;
         alreadyWin = true;
@@ -55,7 +65,6 @@ public class winSystem : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        Destroy(gameObject);
     }
     private void OnDestroy()
     {

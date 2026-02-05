@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 87236e6462e6b934c9b1ca69ffac5e5e
+guid: f1c5a57fcbc1f614ea58790da7eb8426
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Helvetica Rounded
+  - Nimbus Sans Becker PBla
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

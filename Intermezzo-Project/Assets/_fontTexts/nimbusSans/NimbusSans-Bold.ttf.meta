@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 27dcb49a713dc3c49ad8c1db8c111757
+guid: 7261dfdaf71b84e418dad91946ddd207
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Helvetica
+  - Nimbus Sans
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

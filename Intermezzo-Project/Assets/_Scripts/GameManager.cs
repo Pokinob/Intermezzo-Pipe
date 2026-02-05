@@ -7,9 +7,6 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    [SerializeField]
-    private inputScript ingamePause;
-
     public bool alreadyStart = false;
     [SerializeField]
     private Slider sliderExposure;
@@ -19,12 +16,13 @@ public class GameManager : MonoBehaviour
     public float exposureRate = 1;
     public bool delayPipe = false;
     private bool cutting = false;
+    public bool freezeExposure = false;
     public int cutPipe = 0;
     public int documentCount = 0;
-    public int targetDocument = 50;
     [SerializeField]
     private int targetExposure;
-
+    [SerializeField]
+    private Coroutine coroutine;
     public TMP_Text documentPanel;
     [SerializeField]
     private AudioSource gameOverSound;
@@ -32,6 +30,8 @@ public class GameManager : MonoBehaviour
     private AudioClip gameOver;
     [SerializeField]
     private GameObject gameOverPanel;
+    [SerializeField]
+    private Image PropagandaPanel;
 
     private void Awake()
     {
@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (globalPause.instance._globalPause) return;
+        if(Exposure<0) Exposure = 0;
         if(Exposure >= targetExposure)
         {
             UIlose();
@@ -54,7 +56,7 @@ public class GameManager : MonoBehaviour
         {
             delayPipe = false;
         }
-        documentPanel.text = "Documents Transferred: "+documentCount.ToString()+"/"+targetDocument;
+        documentPanel.text = "Documents Transferred: "+documentCount.ToString();
         sliderExposure.value = Exposure;
     }
 
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
         StopAllCoroutines();
         gameOverSound.clip = gameOver;
         gameOverSound.Play();
-        ingamePause.freeze = true;
+        globalPause.instance._globalPause = true;
         gameOverPanel.SetActive(true);
         Debug.Log("Data get leaked by user");
     }
@@ -73,12 +75,43 @@ public class GameManager : MonoBehaviour
         StartCoroutine(alertSystem());
     }
 
+    public void propagandaSkill()
+    {
+        if (coroutine != null) return;
+        freezeExposure = true;
+        Exposure -= 40f;
+        exposureRate += 0.2f;
+        StartCoroutine(durationPropaganda());
+        coroutine = StartCoroutine(cooldownSkill(60f));
+    }
+
+    IEnumerator durationPropaganda()
+    {
+        yield return new WaitForSeconds(4f);
+        freezeExposure = false;
+    }
+
+    IEnumerator cooldownSkill(float cooldown)
+    {
+        PropagandaPanel.color = new Color(1f, 1f, 1f, 0.3f);
+        yield return new WaitForSeconds(cooldown);
+        PropagandaPanel.color = Color.white;
+        coroutine = null;
+    }
+
     IEnumerator alertSystem()
     {
         while (true)
         {
-            Exposure += exposureNormal * exposureRate;
-            yield return new WaitForSeconds(exposurePerSec);
+            if (!globalPause.instance._globalPause && !freezeExposure)
+            {
+                Exposure += exposureNormal * exposureRate;
+                yield return new WaitForSeconds(exposurePerSec);
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
 

@@ -59,8 +59,15 @@ public class EnemySystem : MonoBehaviour
         startProgress = true;
         while (startHostile)
         {
-            GameManager.Instance.Exposure += exposureHostile;
-            yield return new WaitForSeconds(exposurePerSec);
+            if (!globalPause.instance._globalPause && !GameManager.Instance.freezeExposure)
+            {
+                GameManager.Instance.Exposure += exposureHostile;
+                yield return new WaitForSeconds(exposurePerSec);
+            }
+            else
+            {
+                yield return null;
+            }
         }
         
         startProgress = false;

@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class openSettings : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject panelSettings;
+    public static openSettings instance;
+    public GameObject panelSettings;
     [SerializeField]
     private AudioClip button_click;
 
+    private void Start()
+    {
+        instance = this;
+    }
     public void openSet()
     {
 
