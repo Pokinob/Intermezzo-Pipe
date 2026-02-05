@@ -72,7 +72,12 @@ public class inputScript : MonoBehaviour
         pipe.gameObject.transform.Rotate(0, 0, angle);
         Physics2D.SyncTransforms();
 
-        pipe.GetComponent<pipeScript>().startIndicator(rotateCooldownDuration);
+        pipeScript pipeComponent = pipe.GetComponent<pipeScript>();
+        if (pipeComponent != null)
+        {
+            pipeComponent.startIndicator(rotateCooldownDuration);
+        }
+       
         yield return new WaitForSeconds(rotateCooldownDuration);
         //pipe.GetComponent<pipeScript>().pause = false;
         freeze = false;
