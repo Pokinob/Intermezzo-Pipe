@@ -19,6 +19,8 @@ public class pipeGenerator : MonoBehaviour
     private GameObject destinationNodePrefab;
     [SerializeField]
     private GameObject enemyNodePrefab;
+    [SerializeField]
+    private GameObject indicatorNodePrefab;
 
     [SerializeField]
     private int width, height;
@@ -106,28 +108,41 @@ public class pipeGenerator : MonoBehaviour
         
         for (int i = 0; i < 2; i++)
         {
-            generateNode(destinationNodePrefab);
+            generateNodeAtRandomPosition("target", destinationNodePrefab);
         }
         //camPos.transform.position = new Vector3((float)width / 2f + cellSize.x, (float)height / 2f + 0.5f, camPos.transform.position.z);
     }
 
-    private GameObject generateNode(GameObject node)
+    private GameObject generateNodeAtRandomPosition(string nodeName, GameObject node)
     {
-        Vector2 nextPosition = getAvailableNodePosition();
+        Vector2 nextPosition = getNodeAvailableRandomPosition();
         unavailableNodePositions.Add(nextPosition);
 
-        Vector2 actualPosition = nextPosition + new Vector2(0.5f, 0.5f) + cellPositionOffset;
-
-        GameObject nextSpawn = Instantiate(node, actualPosition, Quaternion.identity);
-        nextSpawn.name = $"target {nextPosition.x}-{nextPosition.y}";
-
-        GameObject overridenPipe = GameObject.Find($"pipe {nextPosition.x}-{nextPosition.y}");
-        overridenPipe.SetActive( false );
-
-        return nextSpawn;
+        return generateNodeAtUnmarked(nodeName, node, getNodeAvailableRandomPosition());
     }
 
-    private Vector2 getAvailableNodePosition()
+    private GameObject generateNodeAtUnmarked(string nodeName, GameObject node, Vector2 at)
+    {
+        GameObject newNode = generateObjectAtGrid(nodeName, node, at);
+
+        GameObject overridenPipe = GameObject.Find($"pipe {at.x}-{at.y}");
+        overridenPipe.SetActive(false);
+
+        return newNode;
+    }
+
+    private GameObject generateObjectAtGrid(string objName, GameObject obj, Vector2 at)
+    {
+        Vector2 actualPosition = at + new Vector2(0.5f, 0.5f) + cellPositionOffset;
+
+        GameObject spawnedNode = Instantiate(obj, actualPosition, Quaternion.identity);
+        spawnedNode.name = $"{objName} {at.x}-{at.y}";
+
+        return spawnedNode;
+    }
+
+
+    private Vector2 getNodeAvailableRandomPosition()
     {
         while (true)
         {
@@ -177,9 +192,15 @@ public class pipeGenerator : MonoBehaviour
     {
         while (true)
         {
+            Vector2 nextEnemyPosition = getNodeAvailableRandomPosition();
+            GameObject indicator = generateObjectAtGrid("indicator", indicatorNodePrefab, nextEnemyPosition);
+            unavailableNodePositions.Add(nextEnemyPosition);
+
             yield return new WaitForSeconds(enemySpawnTimeSeconds);
-            GameObject newNode = generateNode(enemyNodePrefab);
-            EnemySystem enemySystem = newNode.GetComponent<EnemySystem>();
+
+            GameObject newNode = generateNodeAtUnmarked("enemy", enemyNodePrefab, nextEnemyPosition);
+            //EnemySystem enemySystem = newNode.GetComponent<EnemySystem>();
+            GameObject.Destroy(indicator);
         }
      
     }
@@ -188,7 +209,7 @@ public class pipeGenerator : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(targetSpawnTimeSeconds);
-            generateNode(destinationNodePrefab);
+            generateNodeAtRandomPosition("target", destinationNodePrefab);
         }
     }
 }
