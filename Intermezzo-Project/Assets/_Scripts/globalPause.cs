@@ -6,8 +6,9 @@ public class globalPause : MonoBehaviour
     
     public bool _globalPause = false;
 
-    private void Start()
+    private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
     }
 }

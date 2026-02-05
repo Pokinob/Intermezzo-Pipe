@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (globalPause.instance._globalPause) return;
-        if(Exposure<0) Exposure = 0;
+        pipeGenerator.Instance.bonusEnemy = documentCount / 10;
+        if (Exposure<0) Exposure = 0;
         if(Exposure >= targetExposure)
         {
             UIlose();
@@ -80,14 +81,14 @@ public class GameManager : MonoBehaviour
         if (coroutine != null) return;
         freezeExposure = true;
         Exposure -= 40f;
-        exposureRate += 0.2f;
+        exposureRate += 0.1f;
         StartCoroutine(durationPropaganda());
         coroutine = StartCoroutine(cooldownSkill(60f));
     }
 
     IEnumerator durationPropaganda()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(10f);
         freezeExposure = false;
     }
 

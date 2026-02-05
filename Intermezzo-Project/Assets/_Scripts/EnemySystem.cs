@@ -21,6 +21,8 @@ public class EnemySystem : MonoBehaviour
 
     private nodeData nodeData;
 
+
+
     private void Start()
     {
         nodeData = gameObject.GetComponent<nodeData>();

@@ -8,6 +8,8 @@ public class pipeGenerator : MonoBehaviour
 {
     [SerializeField]
     private GameManager gameManager;
+    
+    public static pipeGenerator Instance;
 
     [SerializeField]
     private Transform camPos;
@@ -25,6 +27,9 @@ public class pipeGenerator : MonoBehaviour
 
     [SerializeField]
     private int width, height;
+    [SerializeField]
+    private int maxEnemy = 2;
+    public int bonusEnemy = 0;
     [SerializeField]
     private Vector2 cellSize;
     [SerializeField]
@@ -44,6 +49,15 @@ public class pipeGenerator : MonoBehaviour
 
     private int totalWeights;
     private List<Vector2> unavailableNodePositions;
+    private List<GameObject> activeEnemies = new List<GameObject>();
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     private void Start()
     {
@@ -127,10 +141,12 @@ public class pipeGenerator : MonoBehaviour
         GameObject newNode = generateObjectAtGrid(nodeName, node, at);
 
         GameObject overridenPipe = GameObject.Find($"pipe {at.x}-{at.y}");
-        overridenPipe.SetActive(false);
 
-        newNode.GetComponent<nodeData>().pipeBelow = overridenPipe;
-
+        if (overridenPipe != null)
+        {
+            overridenPipe.SetActive(false);
+            newNode.GetComponent<nodeData>().pipeBelow = overridenPipe;
+        }
         return newNode;
     }
 
@@ -172,6 +188,9 @@ public class pipeGenerator : MonoBehaviour
         }
     }
 
+   
+
+
     private GameObject rollPipe()
     {
         int roll = Random.Range(0, totalWeights);
@@ -199,20 +218,47 @@ public class pipeGenerator : MonoBehaviour
             {
                 Vector2 nextEnemyPosition = getNodeAvailableRandomPosition();
                 GameObject indicator = generateObjectAtGrid("indicator", indicatorNodePrefab, nextEnemyPosition);
-                unavailableNodePositions.Add(nextEnemyPosition);
-
                 yield return new WaitForSeconds(enemySpawnTimeSeconds);
 
-                GameObject newNode = generateNodeAtUnmarked("enemy", enemyNodePrefab, nextEnemyPosition);
-                //EnemySystem enemySystem = newNode.GetComponent<EnemySystem>();
-                GameObject.Destroy(indicator);
+                if (activeEnemies.Count < maxEnemy + bonusEnemy)
+                {
+                    unavailableNodePositions.Add(nextEnemyPosition);
+                    GameObject newNode = generateNodeAtUnmarked("enemy", enemyNodePrefab, nextEnemyPosition);
+                    activeEnemies.Add(newNode);
+                    GameObject.Destroy(indicator);
+                }
+                else
+                {
+                    yield return null;
+                    int idx = Random.Range(0, activeEnemies.Count);
+                    TeleportEnemy(activeEnemies[idx], nextEnemyPosition);
+                    GameObject.Destroy(indicator);
+                }
             }
             else
             {
                 yield return null;
             }
         }
-     
+      void TeleportEnemy(GameObject enemy, Vector2 newPos)
+        {
+        if (enemy == null) return;
+
+        nodeData nd = enemy.GetComponent<nodeData>();
+        if (nd == null) return;
+
+        // balikin pipe lama
+        if (nd.pipeBelow != null)
+            nd.pipeBelow.SetActive(true);
+
+        enemy.transform.position = newPos + new Vector2(0.5f, 0.5f) + cellPositionOffset;
+
+        GameObject overridenPipe = GameObject.Find($"pipe {newPos.x}-{newPos.y}");
+        if (overridenPipe == null) return;
+
+        overridenPipe.SetActive(false);
+        nd.pipeBelow = overridenPipe;
+        }
     }
 
     IEnumerator loopSpawnTarget()
@@ -231,4 +277,5 @@ public class pipeGenerator : MonoBehaviour
             }
         }
     }
+
 }
