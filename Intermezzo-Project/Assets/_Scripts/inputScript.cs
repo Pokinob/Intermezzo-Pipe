@@ -12,6 +12,7 @@ public class inputScript : MonoBehaviour
     private Camera cam;
     private Coroutine coroutine;
 
+    private float rotateCooldownDuration = 0.25f;
     private void Awake()
     {
         cam = Camera.main;
@@ -69,9 +70,10 @@ public class inputScript : MonoBehaviour
         freeze = true;
         SoundFXManager.Instance.PlaySoundClip(pipeSound, transform, 1f);
         pipe.gameObject.transform.Rotate(0, 0, angle);
-        //pipe.GetComponent<pipeScript>().pause = true;
         Physics2D.SyncTransforms();
-        yield return new WaitForSeconds(0.5f);
+
+        pipe.GetComponent<pipeScript>().startIndicator(rotateCooldownDuration);
+        yield return new WaitForSeconds(rotateCooldownDuration);
         //pipe.GetComponent<pipeScript>().pause = false;
         freeze = false;
     }
