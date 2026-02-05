@@ -195,25 +195,40 @@ public class pipeGenerator : MonoBehaviour
     {
         while (true)
         {
-            Vector2 nextEnemyPosition = getNodeAvailableRandomPosition();
-            GameObject indicator = generateObjectAtGrid("indicator", indicatorNodePrefab, nextEnemyPosition);
-            unavailableNodePositions.Add(nextEnemyPosition);
+            if (!globalPause.instance._globalPause)
+            {
+                Vector2 nextEnemyPosition = getNodeAvailableRandomPosition();
+                GameObject indicator = generateObjectAtGrid("indicator", indicatorNodePrefab, nextEnemyPosition);
+                unavailableNodePositions.Add(nextEnemyPosition);
 
-            yield return new WaitForSeconds(enemySpawnTimeSeconds);
+                yield return new WaitForSeconds(enemySpawnTimeSeconds);
 
-            GameObject newNode = generateNodeAtUnmarked("enemy", enemyNodePrefab, nextEnemyPosition);
-            //EnemySystem enemySystem = newNode.GetComponent<EnemySystem>();
-            GameObject.Destroy(indicator);
+                GameObject newNode = generateNodeAtUnmarked("enemy", enemyNodePrefab, nextEnemyPosition);
+                //EnemySystem enemySystem = newNode.GetComponent<EnemySystem>();
+                GameObject.Destroy(indicator);
+            }
+            else
+            {
+                yield return null;
+            }
         }
      
     }
+
     IEnumerator loopSpawnTarget()
     {
         while (true)
         {
-            yield return new WaitForSeconds(targetSpawnTimeSeconds);
-            generateNodeAtRandomPosition("target", destinationNodePrefab);
-            generateNodeAtRandomPosition("target", destinationNodePrefab);
+            if (!globalPause.instance._globalPause)
+            {
+                yield return new WaitForSeconds(targetSpawnTimeSeconds);
+                generateNodeAtRandomPosition("target", destinationNodePrefab);
+                generateNodeAtRandomPosition("target", destinationNodePrefab);
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
 }
