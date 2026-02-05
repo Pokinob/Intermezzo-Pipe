@@ -54,11 +54,13 @@ public class winSystem : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        Destroy(gameObject);
+    }
+    private void OnDestroy()
+    {
         if (nodeData.pipeBelow != null)
         {
             nodeData.pipeBelow.SetActive(true);
         }
-
-        Destroy(gameObject);
     }
 }

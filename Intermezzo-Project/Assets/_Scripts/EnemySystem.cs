@@ -58,10 +58,18 @@ public class EnemySystem : MonoBehaviour
         startProgress = true;
         while (startHostile)
         {
-            GameManager.Instance.Exposure+=exposureHostile;
+            GameManager.Instance.Exposure += exposureHostile;
             yield return new WaitForSeconds(exposurePerSec);
         }
+        
         startProgress = false;
     }
-
+    
+    private void OnDestroy()
+    {
+        if (nodeData.pipeBelow != null)
+        {
+            nodeData.pipeBelow.SetActive(true);
+        }
+    }
 }
