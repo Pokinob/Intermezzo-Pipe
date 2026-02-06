@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class destroyTeleport : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision != null)
+        GameObject target = collision.transform.parent.gameObject;
+        if (target != null)
         {
-            if (collision.CompareTag("Target") ||
-            collision.CompareTag("Indicator"))
+
+            if (target.CompareTag("Target") ||
+            target.CompareTag("pipe"))
             {
-                Destroy(collision.gameObject);
+                Destroy(target);
+                return;
             }
         }
     }
