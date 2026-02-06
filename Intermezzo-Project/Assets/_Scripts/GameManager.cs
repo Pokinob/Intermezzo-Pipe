@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public float exposurePerSec;
     public float exposureRate = 1;
     public bool delayPipe = false;
+    public bool delayRotate = false;
     private bool cutting = false;
     public bool freezeExposure = false;
     public int cutPipe = 0;
@@ -36,7 +37,6 @@ public class GameManager : MonoBehaviour
     private Slider propagandaCooldownPanel;
     [SerializeField]
     private Image PropagandaPanel;
-
     private void Awake()
     {
         Instance = this;

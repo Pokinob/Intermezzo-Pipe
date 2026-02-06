@@ -12,7 +12,7 @@ public class inputScript : MonoBehaviour
     private Camera cam;
     private Coroutine coroutine;
 
-    private float rotateCooldownDuration = 0.25f;
+    private float rotateCooldownDuration = 0.15f;
     private void Awake()
     {
         cam = Camera.main;
@@ -65,6 +65,8 @@ public class inputScript : MonoBehaviour
         switch (context.action.name)
         {
             case "RotateClockwise":
+                GameManager.Instance.delayPipe = true;
+                GameManager.Instance.delayRotate = true;
                 coroutine = StartCoroutine(_Rotate(colObj, -90));
                 break;
 
@@ -88,6 +90,8 @@ public class inputScript : MonoBehaviour
         }
        
         yield return new WaitForSeconds(rotateCooldownDuration);
+        GameManager.Instance.delayPipe = false;
+        GameManager.Instance.delayRotate = false;
         //pipe.GetComponent<pipeScript>().pause = false;
         freeze = false;
     }

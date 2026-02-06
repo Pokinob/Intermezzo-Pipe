@@ -20,9 +20,9 @@ public class nodeScript : MonoBehaviour
         nodeScript otherNode = collision.GetComponent<nodeScript>();
         nodeCenterScript otherNodeCenter = collision.GetComponentInParent<nodeCenterScript>();
         powerSource otherPowerSource = collision.GetComponent<powerSource>();
+        if (dScript.nodeSum > 0 && (GameManager.Instance.delayPipe || GameManager.Instance.delayRotate )) return;
         if (_state == nodeState.neutral)
         {
-            if (dScript.nodeSum > 0 && GameManager.Instance.delayPipe) return;
             if (dScript.nodeSum > 0)
             {
                 _state = nodeState.output;
