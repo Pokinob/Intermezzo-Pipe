@@ -38,7 +38,7 @@ public class nodeScript : MonoBehaviour
 
                 if (otherNodeCenter.nodeSum > 0)
                 {
-                    if (otherNode._state == nodeState.output && otherNodeCenter.nodeSum>0)
+                    if (otherNode._state == nodeState.output && otherNodeCenter.nodeSum > 0)
                     {
                         _state = nodeState.input;
                         dScript.plusNodeSum();
