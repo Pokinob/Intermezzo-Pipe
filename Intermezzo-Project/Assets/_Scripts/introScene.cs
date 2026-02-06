@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class introScene : MonoBehaviour
 {
+    [SerializeField]
+    private AudioClip buttonClick;
     public Button nextButton;
     public Image sceneImage;
     public TMP_Text sceneText;
@@ -23,12 +25,13 @@ public class introScene : MonoBehaviour
 
     private void advanceScene()
     {
+
         if (currentSceneProgress == texts.Length - 1)
         {
             SceneManager.LoadSceneAsync("Assets/Scenes/InGameScene.unity");
             return;
         }
-
+        SoundFXManager.Instance.PlaySoundClip(buttonClick, transform, 0.5f);
         setScene(currentSceneProgress + 1);
     }
     private void setScene(int sceneProgress)

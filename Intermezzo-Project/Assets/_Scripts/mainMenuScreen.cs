@@ -17,6 +17,6 @@ public class mainMenuScreen : MonoBehaviour
     void ChangeToGameplayScene()
     {
         SoundFXManager.Instance.PlaySoundClip(button_click, transform, 1f);
-        SceneManager.LoadSceneAsync("Assets/Scenes/InGameScene.unity");
+        SceneManager.LoadSceneAsync("Assets/Scenes/IntroScene.unity");
     }
 }
