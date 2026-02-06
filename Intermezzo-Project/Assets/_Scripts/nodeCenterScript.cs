@@ -11,6 +11,11 @@ public class nodeCenterScript : MonoBehaviour
     private SpriteRenderer sr;
     public bool _pause = false;
 
+    private void Awake()
+    {
+        _pause = false;
+    }
+
     private void Update()
     {
 
@@ -23,8 +28,8 @@ public class nodeCenterScript : MonoBehaviour
             if (nodeSum <= 0 && !_pause)
             {
                 StartCoroutine(_reset());
-                sr.color = new Color(1f, 1f, 1f, 0.3f);
             }
+            sr.color = new Color(1f, 1f, 1f, 0.3f);
         }
     }
 

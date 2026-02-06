@@ -133,7 +133,7 @@ public class pipeGenerator : MonoBehaviour
         Vector2 nextPosition = getNodeAvailableRandomPosition();
         unavailableNodePositions.Add(nextPosition);
 
-        return generateNodeAtUnmarked(nodeName, node, getNodeAvailableRandomPosition());
+        return generateNodeAtUnmarked(nodeName, node, nextPosition);
     }
 
     private GameObject generateNodeAtUnmarked(string nodeName, GameObject node, Vector2 at)
@@ -188,7 +188,17 @@ public class pipeGenerator : MonoBehaviour
         }
     }
 
-   
+    void ClearTile(Vector2 at)
+    {
+        GameObject target = GameObject.Find($"target {at.x}-{at.y}");
+        if (target != null)
+            Destroy(target);
+
+        GameObject enemy = GameObject.Find($"enemy {at.x}-{at.y}");
+        if (enemy != null)
+            Destroy(enemy);
+
+    }
 
 
     private GameObject rollPipe()
@@ -223,6 +233,7 @@ public class pipeGenerator : MonoBehaviour
                 if (activeEnemies.Count < maxEnemy + bonusEnemy)
                 {
                     unavailableNodePositions.Add(nextEnemyPosition);
+                    ClearTile(nextEnemyPosition);
                     GameObject newNode = generateNodeAtUnmarked("enemy", enemyNodePrefab, nextEnemyPosition);
                     activeEnemies.Add(newNode);
                     GameObject.Destroy(indicator);
@@ -240,16 +251,18 @@ public class pipeGenerator : MonoBehaviour
                 yield return null;
             }
         }
-      void TeleportEnemy(GameObject enemy, Vector2 newPos)
-        {
+    }
+
+    void TeleportEnemy(GameObject enemy, Vector2 newPos)
+    {
         if (enemy == null) return;
 
         nodeData nd = enemy.GetComponent<nodeData>();
         if (nd == null) return;
 
-        // balikin pipe lama
-        if (nd.pipeBelow != null)
-            nd.pipeBelow.SetActive(true);
+        if (nd.pipeBelow != null) nd.pipeBelow.SetActive(true);
+
+        ClearTile(newPos);
 
         enemy.transform.position = newPos + new Vector2(0.5f, 0.5f) + cellPositionOffset;
 
@@ -258,8 +271,9 @@ public class pipeGenerator : MonoBehaviour
 
         overridenPipe.SetActive(false);
         nd.pipeBelow = overridenPipe;
-        }
     }
+
+
 
     IEnumerator loopSpawnTarget()
     {

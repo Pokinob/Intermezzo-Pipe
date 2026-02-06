@@ -55,16 +55,17 @@ public class winSystem : MonoBehaviour
             yield return new WaitForSeconds(1f);
             if (globalPause.instance._globalPause)
             {
-                Debug.Log(i);
                 i++;
+            }
+            else
+            {
+                Debug.Log(i);
             }
         }
         GameManager.Instance.documentCount++;
-        alreadyWin = true;
         Debug.Log("Data berhasil terkirim");
-
-        yield return new WaitForSeconds(1f);
-
+        alreadyWin = true;
+        yield return null;
     }
     private void OnDestroy()
     {

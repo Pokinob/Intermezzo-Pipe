@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TMP_Text gameoverText;
     [SerializeField]
+    private Slider propagandaCooldownPanel;
+    [SerializeField]
     private Image PropagandaPanel;
 
     private void Awake()
@@ -97,9 +99,16 @@ public class GameManager : MonoBehaviour
 
     IEnumerator cooldownSkill(float cooldown)
     {
+        propagandaCooldownPanel.gameObject.SetActive(true);
         PropagandaPanel.color = new Color(1f, 1f, 1f, 0.3f);
-        yield return new WaitForSeconds(cooldown);
-        PropagandaPanel.color = Color.white;
+
+        for(int i=(int)cooldown; i>=0; i--)
+        {
+            propagandaCooldownPanel.value = i;
+            yield return new WaitForSeconds(1f);
+        }
+        propagandaCooldownPanel.gameObject.SetActive(false);
+        PropagandaPanel.color = new Color(0.2f, 0.4f, 0.6f, 1f);
         coroutine = null;
     }
 
@@ -123,7 +132,7 @@ public class GameManager : MonoBehaviour
     IEnumerator progressCut()
     {
         cutting = true;
-        yield return new WaitForSeconds(0.1f);
+        yield return null;
         cutPipe--;
         cutting = false;
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class nodeScript : MonoBehaviour
@@ -37,7 +38,7 @@ public class nodeScript : MonoBehaviour
 
                 if (otherNodeCenter.nodeSum > 0)
                 {
-                    if (otherNode._state == nodeState.output)
+                    if (otherNode._state == nodeState.output && otherNodeCenter.nodeSum>0)
                     {
                         _state = nodeState.input;
                         dScript.plusNodeSum();
@@ -56,6 +57,10 @@ public class nodeScript : MonoBehaviour
         if (_state == nodeState.input) return;
         if (_state == nodeState.output)
         {
+            if (dScript.nodeSum <= 0)
+            {
+                _state = nodeState.neutral;
+            }
             if (otherNode != null || otherNodeCenter != null)
                 if (otherNode._state == nodeState.output)
                 {
@@ -63,20 +68,25 @@ public class nodeScript : MonoBehaviour
                     _state = nodeState.mix;
                 }
         }
-        if(_state == nodeState.mix)
+        if (_state == nodeState.mix)
         {
-            if(GameManager.Instance != null)
-            if (!GameManager.Instance.delayPipe)
-            {
-                if (otherNode == null) return;
-                if (otherNode._state == nodeState.output)
+            if (GameManager.Instance != null)
+                if (!GameManager.Instance.delayPipe)
                 {
-                    otherNode._state = nodeState.mix;
-                }else if (dScript.nodeSum > 0)
-                {
-                    _state = nodeState.output;
+                    if (dScript.nodeSum <= 0)
+                    {
+                        _state = nodeState.neutral;
+                    }
+                    if (otherNode == null) return;
+                    if (otherNode._state == nodeState.output)
+                    {
+                        otherNode._state = nodeState.mix;
+                    }
+                    else if (dScript.nodeSum > 0)
+                    {
+                        _state = nodeState.output;
+                    }
                 }
-            }
             return;
         }
     }
@@ -89,7 +99,7 @@ public class nodeScript : MonoBehaviour
             _state = nodeState.neutral;
             return;
         }
-        if (_state == nodeState.mix) 
+        if (_state == nodeState.mix)
         {
             GameManager.Instance.cutPipe++;
         }
@@ -97,7 +107,7 @@ public class nodeScript : MonoBehaviour
 
     public void nodeReset()
     {
-        if (_state == nodeState.output|| _state == nodeState.mix)
+        if (_state == nodeState.output || _state == nodeState.mix)
         {
             StartCoroutine(delay());
             _state = nodeState.neutral;
